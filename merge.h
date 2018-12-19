@@ -3,6 +3,12 @@
 
 #include <string.h>     //for memcpy()
 
+//compare function for qsort()
+int compare_function(const void *a, const void *b)
+{
+        return (*(int *)a - *(int *)b );
+}
+
 void merge(int *X, int N, int *temp)
 {
         int i = 0;
@@ -15,14 +21,14 @@ void merge(int *X, int N, int *temp)
                 {
                         temp[k] = X[i];
                         i++;
-                        k++;
                 }
                 else
                 {
                         temp[k] = X[j];
                         j++;
-                        k++;
                 }
+
+                k++;
         }
 
         while (i<N/2)   //finishing up the lower half
@@ -38,6 +44,9 @@ void merge(int *X, int N, int *temp)
                 j++;
                 k++;
         }
+
+        //making sure no element was left out of order
+        qsort(&temp[0], N, sizeof(int), compare_function);
 
         memcpy(X, temp, N*sizeof(int));
 }

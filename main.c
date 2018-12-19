@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <omp.h>
 
+#include <time.h>
+
 #include "multisort.h"
 #include "merge.h"
 
@@ -23,7 +25,6 @@ int main()
                 scanf("%d", &A[i]);
         }
 
-        printf("\n");
 
         printf("\"A\" array before multisort...\n\t");
         for(int i=0;i<N;i++)

@@ -3,14 +3,7 @@
 
 #include <omp.h>
 
-#include "merge.h"      //for merge()
-
-//compare function for qsort()
-int compare_function(const void *a, const void *b)
-{
-        return (*(int *)a - *(int *)b );
-}
-
+#include "merge.h"      //for merge() and compare_function used in qsort()
 
 void multisort(int *array, int *space, int N)
 {
