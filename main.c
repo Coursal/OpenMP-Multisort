@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <omp.h>
 
-#include <time.h>
-
 #include "multisort.h"
 #include "merge.h"
 
