@@ -15,15 +15,27 @@ void multisort(int *array, int *space, int N)
         }
         else
         {
+                int *startA = array;            
+                int *spaceA = space;
+                int *startB = startA + quarter; 
+                int *spaceB = spaceA + quarter;
+                int *startC = startB + quarter; 
+                int *spaceC = spaceB + quarter;
+                int *startD = startC + quarter; 
+                int *spaceD = spaceC + quarter;
+                
                 //split the input array to 4 subarrays
                 #pragma omp task
-                        multisort(&array[0], &space[0], quarter);
+                        multisort(startA, spaceA, quarter);
+
                 #pragma omp task
-                        multisort(&array[N/4], &space[N/4], quarter);
+                        multisort(startB, spaceB, quarter);
+
                 #pragma omp task
-                        multisort(&array[N/2], &space[N/2], quarter);
+                        multisort(startC, spaceC, quarter);
+
                 #pragma omp task
-                        multisort(&array[3*N/4], &space[3*N/4], quarter);
+                        multisort(startD, spaceD, n - 3 * quarter);
 
                 #pragma omp taskwait
 
@@ -36,7 +48,15 @@ void multisort(int *array, int *space, int N)
                 #pragma omp taskwait
 
                 //merge the couples together
-                merge(&array[0], N, &space[0]);
+                #pragma omp task
+                        merge(startA, startA + quarter - 1, startB, startB + quarter - 1, spaceA);
+
+                #pragma omp task
+                        merge(startC, startC + quarter - 1, startD, array + n - 1, spaceC);
+
+                #pragma omp taskwait
+
+                merge(spaceA, spaceC - 1, spaceC, space + n - 1, array);
         }
 }
 
