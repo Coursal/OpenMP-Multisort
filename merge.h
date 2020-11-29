@@ -1,54 +1,41 @@
 #ifndef _MERGEH_
 #define _MERGEH_
 
-#include <string.h>     //for memcpy()
-
-//compare function for qsort()
+//compare function for qsort() to be used in multisort()
 int compare_function(const void *a, const void *b)
 {
         return (*(int *)a - *(int *)b );
 }
 
-void merge(int *X, int N, int *temp)
+void merge(int *X, int *X_size, int *temp, int *temp_size, int *result)
 {
         int i = 0;
-        int j = N/2;
-        int k = 0;
 
-        while (i<N/2 && j<N)
+        while(X <= X_size && temp <= temp_size)
         {
-                if (X[i] < X[j])
+                if((*X) < (*temp))
                 {
-                        temp[k] = X[i];
-                        i++;
+                        result[i++] = *X;
+                        X++;
                 }
                 else
                 {
-                        temp[k] = X[j];
-                        j++;
+                        result[i++] = *temp;
+                        temp++;
                 }
-
-                k++;
         }
 
-        while (i<N/2)   //finishing up the lower half
+        while (X <= X_size)   //finishing up the lower half
         {
-                temp[k] = X[i];
-                i++;
-                k++;
+                result[i++] = *X;
+                X++;
         }
 
         while (j<N)     //finishing up the upper half
         {
-                temp[k] = X[j];
-                j++;
-                k++;
+                result[k] = *temp;
+                temp++;
         }
-
-        //making sure no element was left out of order
-        qsort(&temp[0], N, sizeof(int), compare_function);
-
-        memcpy(X, temp, N*sizeof(int));
 }
 
 #endif
